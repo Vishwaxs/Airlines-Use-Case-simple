@@ -1,0 +1,378 @@
+{
+  "source_file": "UseCase_Airlines.xlsx",
+  "source_sha256": "82549a897f4829d3e06cfb21b8b1f9100a10cba268ceb3c4597f71ee558a9db3",
+  "structure": {
+    "flights": {
+      "rows": 1020,
+      "columns": [
+        "flight_id",
+        "airline",
+        "source",
+        "destination",
+        "departure_time",
+        "arrival_time",
+        "duration"
+      ],
+      "used_range_rows_excluding_header": 1020,
+      "used_range_columns": 11,
+      "empty_rows_ignored": 0,
+      "empty_unnamed_columns_ignored": 4,
+      "source_types": {
+        "flight_id": {
+          "str": 1020
+        },
+        "airline": {
+          "str": 979,
+          "NoneType": 41
+        },
+        "source": {
+          "str": 1020
+        },
+        "destination": {
+          "str": 1020
+        },
+        "departure_time": {
+          "datetime": 1020
+        },
+        "arrival_time": {
+          "datetime": 1020
+        },
+        "duration": {
+          "time": 1019,
+          "datetime": 1
+        }
+      },
+      "nulls": {
+        "flight_id": 0,
+        "airline": 41,
+        "source": 0,
+        "destination": 0,
+        "departure_time": 0,
+        "arrival_time": 0,
+        "duration": 0
+      }
+    },
+    "payments": {
+      "rows": 1000,
+      "columns": [
+        "payment_id",
+        "booking_id",
+        "amount",
+        "payment_method"
+      ],
+      "used_range_rows_excluding_header": 1000,
+      "used_range_columns": 4,
+      "empty_rows_ignored": 0,
+      "empty_unnamed_columns_ignored": 0,
+      "source_types": {
+        "payment_id": {
+          "str": 1000
+        },
+        "booking_id": {
+          "str": 1000
+        },
+        "amount": {
+          "float": 913,
+          "NoneType": 48,
+          "str": 30,
+          "int": 9
+        },
+        "payment_method": {
+          "str": 1000
+        }
+      },
+      "nulls": {
+        "payment_id": 0,
+        "booking_id": 0,
+        "amount": 48,
+        "payment_method": 0
+      }
+    },
+    "bookings": {
+      "rows": 1000,
+      "columns": [
+        "booking_id",
+        "passenger_id",
+        "flight_id",
+        "booking_date",
+        "status",
+        "passport_number",
+        "seat_number",
+        "emergency_contact_name",
+        "emergency_contact_phone"
+      ],
+      "used_range_rows_excluding_header": 1012,
+      "used_range_columns": 9,
+      "empty_rows_ignored": 12,
+      "empty_unnamed_columns_ignored": 0,
+      "source_types": {
+        "booking_id": {
+          "str": 1000
+        },
+        "passenger_id": {
+          "str": 1000
+        },
+        "flight_id": {
+          "str": 1000
+        },
+        "booking_date": {
+          "datetime": 1000
+        },
+        "status": {
+          "str": 955,
+          "NoneType": 45
+        },
+        "passport_number": {
+          "str": 1000
+        },
+        "seat_number": {
+          "str": 1000
+        },
+        "emergency_contact_name": {
+          "str": 1000
+        },
+        "emergency_contact_phone": {
+          "str": 1000
+        }
+      },
+      "nulls": {
+        "booking_id": 0,
+        "passenger_id": 0,
+        "flight_id": 0,
+        "booking_date": 0,
+        "status": 45,
+        "passport_number": 0,
+        "seat_number": 0,
+        "emergency_contact_name": 0,
+        "emergency_contact_phone": 0
+      }
+    },
+    "passengers": {
+      "rows": 1039,
+      "columns": [
+        "passenger_id",
+        "first_name",
+        "last_name",
+        "age",
+        "gender",
+        "email",
+        "phone",
+        "aadhaar_id",
+        "date_of_birth"
+      ],
+      "used_range_rows_excluding_header": 1039,
+      "used_range_columns": 9,
+      "empty_rows_ignored": 0,
+      "empty_unnamed_columns_ignored": 0,
+      "source_types": {
+        "passenger_id": {
+          "str": 1039
+        },
+        "first_name": {
+          "str": 1039
+        },
+        "last_name": {
+          "str": 1029,
+          "NoneType": 10
+        },
+        "age": {
+          "int": 1039
+        },
+        "gender": {
+          "str": 1039
+        },
+        "email": {
+          "str": 1039
+        },
+        "phone": {
+          "str": 1039
+        },
+        "aadhaar_id": {
+          "str": 1039
+        },
+        "date_of_birth": {
+          "datetime": 1039
+        }
+      },
+      "nulls": {
+        "passenger_id": 0,
+        "first_name": 0,
+        "last_name": 10,
+        "age": 0,
+        "gender": 0,
+        "email": 0,
+        "phone": 0,
+        "aadhaar_id": 0,
+        "date_of_birth": 0
+      }
+    }
+  },
+  "flights": {
+    "unique_ids": 1004,
+    "duplicate_id_groups": 16,
+    "duplicate_rows_in_groups": 32,
+    "exact_duplicate_groups": 15,
+    "exact_duplicate_excess_rows": 15,
+    "conflicting_duplicate_groups": 1,
+    "conflicting_ids": [
+      "6F250"
+    ],
+    "conflicting_duplicate_rows": 2,
+    "conflicting_columns": {
+      "6F250": [
+        "source",
+        "departure_time",
+        "arrival_time",
+        "duration"
+      ]
+    },
+    "airline_counts": {
+      "IndiGo": 249,
+      "SpiceJet": 240,
+      "Air India": 236,
+      "Vistara": 223,
+      "<NULL>": 41,
+      "UNKNOWN": 31
+    },
+    "real_carrier_count": 4,
+    "id_pattern": "[A-Z0-9]{2}\\d{3}",
+    "invalid_id_pattern_rows": 0,
+    "cities": [
+      "BLR",
+      "BOM",
+      "CCU",
+      "DEL",
+      "HYD",
+      "MAA"
+    ],
+    "ordered_routes": 30,
+    "self_route_rows": 0,
+    "departure_min": "2026-04-17T12:25:41.701000",
+    "departure_max": "2026-04-20T23:38:41.701000",
+    "unparseable_timestamp_rows": 0,
+    "raw_date_different_rows": 125,
+    "raw_forward_date_crossing_rows": 124,
+    "negative_interval_rows": 1,
+    "negative_examples": [
+      {
+        "flight_id": "SJ192",
+        "departure": "2026-04-19T18:45:42",
+        "arrival": "2026-04-18T23:45:42",
+        "raw_interval_minutes": -1140.0,
+        "one_day_corrected_minutes": 300.0
+      }
+    ],
+    "corrected_min_minutes": 30.0,
+    "corrected_max_minutes": 300.0,
+    "corrected_invalid_duration_rows": 0,
+    "corrected_overnight_rows": 124,
+    "red_eye_rows": 279,
+    "raw_duration_parseable_rows": 1020,
+    "duration_reconciliation_tolerance_seconds": 1,
+    "raw_duration_original_nonzero_subsecond_difference_rows": 0,
+    "raw_duration_matches_original_interval_rows": 1020,
+    "raw_duration_matches_corrected_interval_rows": 1019,
+    "raw_duration_corrected_mismatch_ids": [
+      "SJ192"
+    ],
+    "without_booking_distinct_ids": 20
+  },
+  "bookings": {
+    "unique_ids": 1000,
+    "status_counts": {
+      "CONFIRMED": 320,
+      "CANCELLED": 314,
+      "PENDING": 291,
+      "<NULL>": 45,
+      "INVALID": 30
+    },
+    "date_min": "2025-04-17T11:37:36.951000",
+    "date_max": "2026-04-17T11:37:36.951000",
+    "missing_flight_reference_rows": 0,
+    "missing_passenger_reference_rows": 0,
+    "referencing_duplicated_flight_id_rows": 32,
+    "referencing_conflicting_flight_id_rows": 2,
+    "without_payment_rows": 363
+  },
+  "payments": {
+    "unique_ids": 1000,
+    "distinct_bookings": 637,
+    "valid_amount_rows": 922,
+    "missing_amount_rows": 48,
+    "non_numeric_amount_rows": 30,
+    "literal_invalid_rows": 30,
+    "non_positive_amount_rows": 0,
+    "valid_amount_total": "7385142.98",
+    "method_counts": {
+      "UPI": 358,
+      "CARD": 329,
+      "NETBANKING": 313
+    },
+    "payments_per_booking_distribution": {
+      "1": 370,
+      "2": 189,
+      "3": 63,
+      "4": 13,
+      "6": 1,
+      "5": 1
+    },
+    "missing_booking_reference_rows": 0,
+    "cancelled_booking_payment_rows": 306
+  },
+  "passengers": {
+    "unique_ids": 1000,
+    "duplicate_id_groups": 36,
+    "duplicate_candidate_rows": 75,
+    "duplicate_excess_rows": 39,
+    "duplicate_group_size_distribution": {
+      "2": 33,
+      "3": 3
+    },
+    "exact_duplicate_excess_rows": 0,
+    "duplicate_groups_varying_by_field": {
+      "first_name": 11,
+      "last_name": 27,
+      "age": 0,
+      "gender": 0,
+      "email": 36,
+      "phone": 36,
+      "aadhaar_id": 36,
+      "date_of_birth": 36
+    },
+    "missing_last_name_rows": 10,
+    "min_age": 1.0,
+    "max_age": 89.0,
+    "under_18_rows": 227,
+    "under_18_distinct_ids": 215,
+    "gender_counts": {
+      "M": 545,
+      "F": 494
+    },
+    "aadhaar_length_counts": {
+      "12": 1039
+    },
+    "aadhaar_non_digit_rows": 0,
+    "aadhaar_leading_zero_rows": 114,
+    "without_booking_rows": 382,
+    "without_booking_distinct_ids": 364
+  },
+  "fanout": {
+    "source_booking_rows": 1000,
+    "booking_flight_left_join_rows": 1032,
+    "booking_payment_inner_join_rows": 1000,
+    "booking_payment_left_join_rows": 1363,
+    "naive_three_way_inner_join_rows": 1028,
+    "naive_three_way_left_join_rows": 1404,
+    "true_payment_total": "7385142.98",
+    "naive_three_way_total": "7593758.92",
+    "inflation": "208615.94"
+  },
+  "discrepancies": [
+    "Aadhaar length counts are {'12': 1039}; 114 source values retain a leading zero. Check cell types before assuming digits were lost.",
+    "382 passenger rows have no booking, representing 364 distinct IDs.",
+    "227 passenger rows are under 18, representing 215 distinct IDs.",
+    "125 flight rows have different dates, including 1 backwards interval(s). Corrected source overnight count is 124, before duplicate handling.",
+    "Booking-payment inner join has 1000 rows; its left join has 1363. 363 bookings have no payment; payments cover 637 distinct bookings.",
+    "Empty Excel padding: 12 rows and 4 unnamed columns ignored."
+  ]
+}

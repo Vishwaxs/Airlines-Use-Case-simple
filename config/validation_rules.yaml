@@ -1,0 +1,20 @@
+required_columns:
+  flights: [flight_id, airline, source, destination, departure_time, arrival_time, duration]
+  bookings: [booking_id, passenger_id, flight_id, booking_date, status, passport_number, seat_number, emergency_contact_name, emergency_contact_phone]
+  payments: [payment_id, booking_id, amount, payment_method]
+  passengers: [passenger_id, first_name, last_name, age, gender, email, phone, aadhaar_id, date_of_birth]
+
+id_patterns:
+  flight_id: '^[A-Z0-9]{2}[0-9]{3}$'
+  booking_id: '^B[0-9]{4}$'
+  payment_id: '^PAY[0-9]{4}$'
+  passenger_id: '^P[0-9]{4}$'
+
+airlines: [Air India, IndiGo, SpiceJet, Vistara]
+booking_statuses: [CONFIRMED, CANCELLED, PENDING]
+payment_methods: [UPI, CARD, NETBANKING]
+genders: [M, F]
+age_min: 0
+age_max: 120
+maximum_duration_minutes: 1440
+duration_reconciliation_tolerance_seconds: 1
