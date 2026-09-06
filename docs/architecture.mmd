@@ -1,0 +1,23 @@
+%%{init: {"theme": "neutral", "flowchart": {"curve": "linear"}}}%%
+flowchart LR
+    subgraph read_stage["1. Read and validate"]
+        direction TB
+        A[Source workbook] --> B[Ingest: preserve cell types]
+        B --> C[Bronze: typed JSONL]
+        C --> D[Validate: declarative rules]
+    end
+    subgraph clean_stage["2. Clean and protect"]
+        direction TB
+        E[Clean: duration repair, deduplication, survivorship]
+        E --> F[PII protection: keyed HMAC]
+        P[ASG_PII_PEPPER from environment] --> F
+        F --> G[Silver: typed Parquet]
+        E --> Q[Restricted quarantine: original fields and reason]
+    end
+    subgraph publish_stage["3. Model and export"]
+        direction TB
+        H[Model: star schema in DuckDB] --> I[Gold: dimension and fact CSVs plus KPI extracts]
+        I --> J[Power BI]
+        I --> R[Run manifest and data quality report]
+    end
+    read_stage --> clean_stage --> publish_stage

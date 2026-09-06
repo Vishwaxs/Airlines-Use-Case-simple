@@ -1,0 +1,16 @@
+flowchart TD
+    A[Source: 1020 flights / 1000 bookings / 1000 payments / 1039 passengers] --> B[Read cells and record source rows]
+    B --> C{Required structure present?}
+    C -->|No| X[Fail run and log reason]
+    C -->|Yes| D[Flag row issues]
+    D --> F[Flights: repair duration and resolve duplicates]
+    D --> P[Passengers: deterministic survivor then PII protection]
+    D --> M[Payments: valid / missing / non-numeric]
+    D --> K[Bookings: retain status and unresolved references]
+    F --> Q[Conflicting / unusable rows: quarantine]
+    F --> S[Silver tables]
+    P --> S
+    M --> S
+    K --> S
+    S --> G[Unique analytical keys / payment-grain facts]
+    G --> O[Gold CSVs / DuckDB / quality evidence]

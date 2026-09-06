@@ -1,0 +1,208 @@
+{
+  "run_id": "20260906T073742_46102fbf2791",
+  "status": "success",
+  "started_at": "2026-09-06T07:37:42.039890+00:00",
+  "source_file": "UseCase_Airlines.xlsx",
+  "stages": [
+    {
+      "name": "ingest",
+      "started_at": "2026-09-06T07:37:42.043497+00:00",
+      "rows_in": {},
+      "rows_out": {
+        "flights": 1020,
+        "payments": 1000,
+        "bookings": 1000,
+        "passengers": 1039
+      },
+      "rows_quarantined": {},
+      "status": "success",
+      "ended_at": "2026-09-06T07:37:42.214280+00:00",
+      "duration_seconds": 0.170494
+    },
+    {
+      "name": "validate",
+      "started_at": "2026-09-06T07:37:42.214509+00:00",
+      "rows_in": {
+        "flights": 1020,
+        "payments": 1000,
+        "bookings": 1000,
+        "passengers": 1039
+      },
+      "rows_out": {
+        "flights": 1020,
+        "payments": 1000,
+        "bookings": 1000,
+        "passengers": 1039
+      },
+      "rows_quarantined": {},
+      "status": "success",
+      "ended_at": "2026-09-06T07:37:42.835416+00:00",
+      "duration_seconds": 0.620858
+    },
+    {
+      "name": "clean",
+      "started_at": "2026-09-06T07:37:42.835564+00:00",
+      "rows_in": {
+        "flights": 1020,
+        "payments": 1000,
+        "bookings": 1000,
+        "passengers": 1039
+      },
+      "rows_out": {
+        "flights": 1003,
+        "passengers": 1000,
+        "bookings": 1000,
+        "payments": 1000
+      },
+      "rows_quarantined": {
+        "flights": 2,
+        "payments": 0,
+        "bookings": 0,
+        "passengers": 0
+      },
+      "status": "success",
+      "ended_at": "2026-09-06T07:37:43.164957+00:00",
+      "duration_seconds": 0.329352
+    },
+    {
+      "name": "model",
+      "started_at": "2026-09-06T07:37:43.165092+00:00",
+      "rows_in": {
+        "flights": 1003,
+        "passengers": 1000,
+        "bookings": 1000,
+        "payments": 1000
+      },
+      "rows_out": {
+        "flights": 1003,
+        "passengers": 1000,
+        "bookings": 1000,
+        "payments": 1000
+      },
+      "rows_quarantined": {},
+      "status": "success",
+      "ended_at": "2026-09-06T07:37:43.287078+00:00",
+      "duration_seconds": 0.121955
+    },
+    {
+      "name": "kpi",
+      "started_at": "2026-09-06T07:37:43.287427+00:00",
+      "rows_in": {
+        "flights": 1003,
+        "passengers": 1000,
+        "bookings": 1000,
+        "payments": 1000
+      },
+      "rows_out": {
+        "kpi_summary": 1
+      },
+      "rows_quarantined": {},
+      "status": "success",
+      "ended_at": "2026-09-06T07:37:43.311655+00:00",
+      "duration_seconds": 0.024184
+    },
+    {
+      "name": "export",
+      "started_at": "2026-09-06T07:37:43.311838+00:00",
+      "rows_in": {
+        "flights": 1003,
+        "passengers": 1000,
+        "bookings": 1000,
+        "payments": 1000
+      },
+      "rows_out": {
+        "dim_date": 371,
+        "dim_airline": 5,
+        "dim_route": 31,
+        "dim_passenger": 1001,
+        "dim_status": 5,
+        "fact_flight": 1004,
+        "fact_booking": 1000,
+        "fact_payment": 1000,
+        "dq_issue_summary": 15,
+        "kpi_summary": 1,
+        "kpi_route": 31,
+        "kpi_airline": 5,
+        "kpi_departure_hour": 24,
+        "kpi_booking_month": 13
+      },
+      "rows_quarantined": {},
+      "status": "success",
+      "ended_at": "2026-09-06T07:37:43.387809+00:00",
+      "duration_seconds": 0.075932
+    }
+  ],
+  "versions": {
+    "pandas": "3.0.5",
+    "duckdb": "1.5.5",
+    "openpyxl": "3.1.5",
+    "pyarrow": "25.0.1"
+  },
+  "source_sha256": "82549a897f4829d3e06cfb21b8b1f9100a10cba268ceb3c4597f71ee558a9db3",
+  "ended_at": "2026-09-06T07:37:43.387955+00:00",
+  "source_rows": {
+    "flights": 1020,
+    "payments": 1000,
+    "bookings": 1000,
+    "passengers": 1039
+  },
+  "silver_rows": {
+    "flights": 1003,
+    "passengers": 1000,
+    "bookings": 1000,
+    "payments": 1000
+  },
+  "quarantine_rows": {
+    "flights": 2,
+    "payments": 0,
+    "bookings": 0,
+    "passengers": 0
+  },
+  "gold_rows": {
+    "dim_date": 371,
+    "dim_airline": 5,
+    "dim_route": 31,
+    "dim_passenger": 1001,
+    "dim_status": 5,
+    "fact_flight": 1004,
+    "fact_booking": 1000,
+    "fact_payment": 1000,
+    "dq_issue_summary": 15,
+    "kpi_summary": 1,
+    "kpi_route": 31,
+    "kpi_airline": 5,
+    "kpi_departure_hour": 24,
+    "kpi_booking_month": 13
+  },
+  "kpis": {
+    "flight_count": 1003,
+    "avg_duration_minutes": 164.67211774675968,
+    "overnight_share": 0.12163509471585245,
+    "red_eye_share": 0.27018943170488535,
+    "booking_count": 1000,
+    "payment_count": 1000,
+    "gross_valid_payment_amount": "7385142.98",
+    "confirmed_booking_payment_amount": "2471402.04",
+    "cancellation_rate": 0.314,
+    "confirmation_rate": 0.32,
+    "payment_coverage": 0.637,
+    "avg_valid_payment_per_paid_booking": 12186.704587458747,
+    "bookings_without_payment": 363
+  },
+  "gold_sha256": {
+    "dim_airline.csv": "3c9de0ebbdb6c308ccae3c79e9d61dcbd2561928e00da0f393e0bab171b3ecfc",
+    "dim_date.csv": "3adf19decc2139c2f091f5346d5b72fdb5338c3f43e755c6074ccf9f913f932c",
+    "dim_passenger.csv": "8a773bea903375cfde20c3c015327ba81b2e260c1c9cb20a2eb01c4d281b0557",
+    "dim_route.csv": "48ef3e56802280ed94df7a4559594e6c387e8e2126de1dd2f65be4819332eb91",
+    "dim_status.csv": "33a0a36af36d19ecf9f65467be1d2dc109f1c50f3c2636e55403c1e0255d0398",
+    "dq_issue_summary.csv": "d92927fb3dc1ef70da5ae40acaf5de3d07155e9ce1a685d1ce178bac09393e9b",
+    "fact_booking.csv": "2e907d325dc51bf875fb971c11695896dc26e19f572774e82f0bebcf73acdc81",
+    "fact_flight.csv": "59069464321af34b35be60ce9d61630e3baff3a34eedeeebbbf7de0bbbc14d98",
+    "fact_payment.csv": "2a3d8c929785b9ba2250ac26caf8b0c87cb41bf5913890691aec52bca50cdc39",
+    "kpi_airline.csv": "d775fe87ceb81853dc44ad232295f0439ee84e837a585c055247ae82218dac64",
+    "kpi_booking_month.csv": "a630c43c03b565e4e1f6f1273bc78aaa36530e53109084e4c1486e650a30d952",
+    "kpi_departure_hour.csv": "0826924d3ce79d7bc1f9b16da578933d1f790285d59a3161687c85105e237555",
+    "kpi_route.csv": "7c3aba1718621b2004274073309405cd31d7970f466b971c6f245fced3db60ce",
+    "kpi_summary.csv": "b9e660dc0dd4abb186f8340754f464d52c1a4294b215484c878744a6e724b8be"
+  }
+}

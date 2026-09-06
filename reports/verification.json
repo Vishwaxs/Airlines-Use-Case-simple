@@ -1,0 +1,102 @@
+{
+  "tracked_pipeline_code_commit": "6846634468e37cc0306885940baaaf1087096966",
+  "verification": "Existing Python 3.13 environment; actual pipeline and full pytest suite after each of seven phases. Phase 6 starts with empty published generated paths; prior layers retained in ignored backup after tool deletion policy rejection.",
+  "phase_checks": [
+    {
+      "phase": 1,
+      "pipeline_exit_code": 0,
+      "test_exit_code": 0,
+      "test_result": "61 passed in 7.94s",
+      "run_id": "20260906T065311_3563513f680c"
+    },
+    {
+      "phase": 2,
+      "pipeline_exit_code": 0,
+      "test_exit_code": 0,
+      "test_result": "62 passed in 8.25s",
+      "run_id": "20260906T065512_96b75755d21a"
+    },
+    {
+      "phase": 3,
+      "pipeline_exit_code": 0,
+      "test_exit_code": 0,
+      "test_result": "62 passed in 9.16s",
+      "run_id": "20260906T065929_8603c3dcd547"
+    },
+    {
+      "phase": 4,
+      "pipeline_exit_code": 0,
+      "test_exit_code": 0,
+      "test_result": "62 passed in 7.64s",
+      "run_id": "20260906T072857_393a04ab2c14"
+    },
+    {
+      "phase": 5,
+      "pipeline_exit_code": 0,
+      "test_exit_code": 0,
+      "test_result": "63 passed in 7.63s",
+      "run_id": "20260906T073121_d040bc87b8f3"
+    },
+    {
+      "phase": 6,
+      "pipeline_exit_code": 0,
+      "test_exit_code": 0,
+      "test_result": "63 passed in 7.54s",
+      "run_id": "20260906T073332_819853e3e70b"
+    },
+    {
+      "phase": 7,
+      "pipeline_exit_code": 0,
+      "test_exit_code": 0,
+      "test_result": "63 passed in 7.63s",
+      "run_id": "20260906T073742_46102fbf2791"
+    }
+  ],
+  "tests_passed": 63,
+  "tests_failed": 0,
+  "latest_run_id": "20260906T073742_46102fbf2791",
+  "clean_layer_run_id": "20260906T073332_819853e3e70b",
+  "all_14_gold_csv_hashes_equal_phases_5_6_7": true,
+  "source_sha256": "82549a897f4829d3e06cfb21b8b1f9100a10cba268ceb3c4597f71ee558a9db3",
+  "source_original_unchanged": true,
+  "protected_module_business_logic_unchanged": {
+    "src/clean.py": true,
+    "src/pii.py": true,
+    "src/model.py": true
+  },
+  "independent_source_evidence": "reports/source_verification.json",
+  "source_issue_target": 1048,
+  "source_issue_measured": 714,
+  "source_issue_gold": 714,
+  "source_issue_target_status": "unsupported supplied target; independent source and gold agree",
+  "ruff": "All checks passed!",
+  "sensitive_tracked_and_history_path_hits": 0,
+  "notebook_executed_cells": 8,
+  "notebook_error_outputs": 0,
+  "notebook_markdown_word_counts": [
+    29,
+    20,
+    23,
+    16,
+    20,
+    20,
+    16,
+    28
+  ],
+  "banned_word_hits": 0,
+  "emoji_hits_in_files_and_commit_messages": 0,
+  "word_rendered_pages": 8,
+  "word_source_run_id": "20260906T073332_819853e3e70b",
+  "word_visual_review": "All eight PDF-rendered pages inspected; no clipping or overflow.",
+  "privacy_scan": {
+    "status": "passed",
+    "files_scanned": 29,
+    "pattern_hits": 0,
+    "method": "CSV/JSON field values; DuckDB table/view cells; log/Markdown lines and table cells; private source contact and identifier comparison including notebook and Word XML. No PII values included."
+  },
+  "pending": [
+    "Power BI source-schema repair, real PBIX and genuine screenshots",
+    "Revised Azure 14-file run, downloaded hashes, failed-job exit code and reviewer-role verification",
+    "Existing untracked Azure/PBIP files and remote publication"
+  ]
+}

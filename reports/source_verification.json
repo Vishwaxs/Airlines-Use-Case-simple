@@ -1,0 +1,180 @@
+{
+  "source_sha256": "82549a897f4829d3e06cfb21b8b1f9100a10cba268ceb3c4597f71ee558a9db3",
+  "method": "openpyxl workbook cells and Python standard library; validation/clean source inspected only for issue definitions; no project-module calls",
+  "source_rows": {
+    "flights": 1020,
+    "payments": 1000,
+    "bookings": 1000,
+    "passengers": 1039
+  },
+  "metrics": {
+    "fact_flight_real_rows": 1003,
+    "fact_flight_including_unknown": 1004,
+    "average_duration_minutes": 164.6721177467597,
+    "overnight_share": 0.12163509471585245,
+    "red_eye_share": 0.27018943170488535,
+    "sj192_corrected_duration": 300.0,
+    "sj192_correction_reason": "arrival_rolled_forward_one_day",
+    "gross_valid_payment_amount": "7385142.98",
+    "confirmed_booking_payment_amount": "2471402.04",
+    "average_valid_payment_per_paid_booking": "12186.70",
+    "valid_paid_booking_denominator": 606,
+    "any_paid_bookings": 637,
+    "exact_duplicate_rows": 15,
+    "conflicting_duplicate_rows": 2,
+    "conflicting_duplicate_flight_ids": [
+      "6F250"
+    ],
+    "missing_airline": 41,
+    "sentinel_airline": 31,
+    "missing_status": 45,
+    "sentinel_status": 30,
+    "missing_amount": 48,
+    "non_numeric_amount": 30,
+    "duplicate_passenger_rows": 75,
+    "missing_last_name": 10,
+    "bookings_without_payment": 363,
+    "flights_without_booking": 20,
+    "unresolved_flight_references": 2,
+    "total_source_issue_events": 714,
+    "booking_year_month_periods": 13,
+    "booking_year_month_first": "2025-04",
+    "booking_year_month_last": "2026-04",
+    "booking_year_month_total": 1000
+  },
+  "source_issue_counts": {
+    "bookings.booking_without_payment": 363,
+    "bookings.missing_status": 45,
+    "bookings.sentinel_status": 30,
+    "bookings.unavailable_flight_reference": 2,
+    "flights.conflicting_duplicate_key": 2,
+    "flights.duration_reconciliation_mismatch": 1,
+    "flights.exact_duplicate": 15,
+    "flights.flight_without_booking": 20,
+    "flights.missing_airline": 41,
+    "flights.negative_duration": 1,
+    "flights.sentinel_airline": 31,
+    "passengers.duplicate_passenger_id": 75,
+    "passengers.missing_last_name": 10,
+    "payments.missing_amount": 48,
+    "payments.non_numeric_amount": 30
+  },
+  "booking_months": [
+    {
+      "year": 2025,
+      "month": 4,
+      "month_label": "2025-04",
+      "bookings": 48,
+      "gross_valid_payment_amount": "404599.52",
+      "confirmed_payment_amount": "169447.92"
+    },
+    {
+      "year": 2025,
+      "month": 5,
+      "month_label": "2025-05",
+      "bookings": 80,
+      "gross_valid_payment_amount": "726543.51",
+      "confirmed_payment_amount": "313200.03"
+    },
+    {
+      "year": 2025,
+      "month": 6,
+      "month_label": "2025-06",
+      "bookings": 89,
+      "gross_valid_payment_amount": "547834.42",
+      "confirmed_payment_amount": "175062.24"
+    },
+    {
+      "year": 2025,
+      "month": 7,
+      "month_label": "2025-07",
+      "bookings": 66,
+      "gross_valid_payment_amount": "550550.01",
+      "confirmed_payment_amount": "139145.09"
+    },
+    {
+      "year": 2025,
+      "month": 8,
+      "month_label": "2025-08",
+      "bookings": 101,
+      "gross_valid_payment_amount": "761763.94",
+      "confirmed_payment_amount": "212778.58"
+    },
+    {
+      "year": 2025,
+      "month": 9,
+      "month_label": "2025-09",
+      "bookings": 75,
+      "gross_valid_payment_amount": "502915.25",
+      "confirmed_payment_amount": "230475.31"
+    },
+    {
+      "year": 2025,
+      "month": 10,
+      "month_label": "2025-10",
+      "bookings": 76,
+      "gross_valid_payment_amount": "583569.36",
+      "confirmed_payment_amount": "264592.54"
+    },
+    {
+      "year": 2025,
+      "month": 11,
+      "month_label": "2025-11",
+      "bookings": 90,
+      "gross_valid_payment_amount": "509170.91",
+      "confirmed_payment_amount": "252751.29"
+    },
+    {
+      "year": 2025,
+      "month": 12,
+      "month_label": "2025-12",
+      "bookings": 89,
+      "gross_valid_payment_amount": "707895.77",
+      "confirmed_payment_amount": "208636.77"
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "month_label": "2026-01",
+      "bookings": 89,
+      "gross_valid_payment_amount": "698743.07",
+      "confirmed_payment_amount": "185575.93"
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "month_label": "2026-02",
+      "bookings": 68,
+      "gross_valid_payment_amount": "525253.34",
+      "confirmed_payment_amount": "105530.44"
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "month_label": "2026-03",
+      "bookings": 73,
+      "gross_valid_payment_amount": "421456.18",
+      "confirmed_payment_amount": "106470.52"
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "month_label": "2026-04",
+      "bookings": 56,
+      "gross_valid_payment_amount": "444847.70",
+      "confirmed_payment_amount": "107735.38"
+    }
+  ],
+  "gold_comparison_after_source_derivation": {
+    "gold_issue_events": 714,
+    "gold_issue_categories_match": true,
+    "gold_months_match": true,
+    "gold_month_row_count": 13,
+    "fact_queries_match_source": true,
+    "gold_average_duration_minutes": 164.67211774675968,
+    "float_absolute_tolerance": 1e-09,
+    "money_compared_as_decimal": true,
+    "supplied_issue_target": 1048,
+    "supplied_issue_target_matches": false
+  }
+}
