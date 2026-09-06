@@ -1,0 +1,166 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 37.643658831500815
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1210.7521469965259,
+            "y": 304.39535556824376
+          },
+          "nodeIndex": "_Measures",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 817.29293548955366,
+            "y": 706.79071113648752
+          },
+          "nodeIndex": "dim_airline",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50.013751774907178,
+            "y": 452.05650973200477
+          },
+          "nodeIndex": "dim_booking_date",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1494.7521469965259,
+            "y": 330.39535556824376
+          },
+          "nodeIndex": "dim_date",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 781.16272285768719,
+            "y": 58.36144870737462
+          },
+          "nodeIndex": "dim_departure_date",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334.2220513742119,
+            "y": 604.26406985236235
+          },
+          "nodeIndex": "dim_passenger",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 976.75214699652588,
+            "y": 356.55106190154197
+          },
+          "nodeIndex": "dim_route",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 190.88629875492552
+          },
+          "nodeIndex": "dim_status",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1778.7521469965259,
+            "y": 366.39535556824376
+          },
+          "nodeIndex": "dq_issue_summary",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334.23092698700293,
+            "y": 255.97974911220598
+          },
+          "nodeIndex": "fact_booking",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 618.59545420075187,
+            "y": 356.5868536318327
+          },
+          "nodeIndex": "fact_flight",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334.18442855454134,
+            "y": -50
+          },
+          "nodeIndex": "fact_payment",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 48.299816151792385,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

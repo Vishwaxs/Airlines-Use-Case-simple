@@ -1,0 +1,57 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "f6c8f254e2003bc435ea",
+  "position": {
+    "x": 10,
+    "y": 225,
+    "z": 200,
+    "height": 330,
+    "width": 1900,
+    "tabOrder": 200
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_flight"
+                    }
+                  },
+                  "Property": "departure_hour"
+                }
+              },
+              "queryRef": "fact_flight.departure_hour",
+              "nativeQueryRef": "departure_hour",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Flights"
+                }
+              },
+              "queryRef": "_Measures.Flights",
+              "nativeQueryRef": "Flights"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

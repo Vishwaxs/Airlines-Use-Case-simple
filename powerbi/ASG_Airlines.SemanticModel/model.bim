@@ -1,0 +1,1095 @@
+{
+  "compatibilityLevel": 1606,
+  "model": {
+    "annotations": [
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"SourceFolder\",\"_Measures\",\"dim_airline\",\"dim_date\",\"dim_departure_date\",\"dim_booking_date\",\"dim_route\",\"dim_passenger\",\"dim_status\",\"fact_flight\",\"fact_booking\",\"fact_payment\",\"dq_issue_summary\"]"
+      },
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "en-US",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "expressions": [
+      {
+        "name": "SourceFolder",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Text"
+          }
+        ],
+        "expression": "\"c:/Users/vishw/Downloads/Airlines Use Case simple/data/gold\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true]",
+        "kind": "m",
+        "lineageTag": "e06f8b29-9d52-432b-a8f4-6572f6815205"
+      }
+    ],
+    "relationships": [
+      {
+        "name": "rel_airline_flight",
+        "fromColumn": "airline_sk",
+        "fromTable": "fact_flight",
+        "toColumn": "airline_sk",
+        "toTable": "dim_airline"
+      },
+      {
+        "name": "rel_route_flight",
+        "fromColumn": "route_sk",
+        "fromTable": "fact_flight",
+        "toColumn": "route_sk",
+        "toTable": "dim_route"
+      },
+      {
+        "name": "rel_depdate_flight",
+        "fromColumn": "departure_date_sk",
+        "fromTable": "fact_flight",
+        "toColumn": "date_sk",
+        "toTable": "dim_departure_date"
+      },
+      {
+        "name": "rel_flight_booking",
+        "fromColumn": "flight_sk",
+        "fromTable": "fact_booking",
+        "toColumn": "flight_sk",
+        "toTable": "fact_flight"
+      },
+      {
+        "name": "rel_bookdate_booking",
+        "fromColumn": "booking_date_sk",
+        "fromTable": "fact_booking",
+        "toColumn": "date_sk",
+        "toTable": "dim_booking_date"
+      },
+      {
+        "name": "rel_passenger_booking",
+        "fromColumn": "passenger_sk",
+        "fromTable": "fact_booking",
+        "toColumn": "passenger_sk",
+        "toTable": "dim_passenger"
+      },
+      {
+        "name": "rel_status_booking",
+        "fromColumn": "status_sk",
+        "fromTable": "fact_booking",
+        "toColumn": "status_sk",
+        "toTable": "dim_status"
+      },
+      {
+        "name": "rel_booking_payment",
+        "fromColumn": "booking_sk",
+        "fromTable": "fact_payment",
+        "toColumn": "booking_sk",
+        "toTable": "fact_booking"
+      }
+    ],
+    "sourceQueryCulture": "en-IN",
+    "tables": [
+      {
+        "name": "_Measures",
+        "columns": [
+          {
+            "name": "RowId",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "b4c9941a-3645-4c90-ae95-4423b809431a",
+            "sourceColumn": "RowId"
+          }
+        ],
+        "lineageTag": "0b1c4c63-1d44-4664-9120-73ab0e55f83e",
+        "measures": [
+          {
+            "name": "Flights",
+            "description": "Total valid flight count excluding unknown placeholder surrogate -1",
+            "expression": [
+              "COALESCE(",
+              "    CALCULATE(",
+              "        COUNTROWS('fact_flight'),",
+              "        KEEPFILTERS('fact_flight'[is_unknown_member] = FALSE())",
+              "    ),",
+              "    0",
+              ")"
+            ],
+            "formatString": "#,##0",
+            "lineageTag": "a18a8009-7c13-4a4e-be1e-5c25c1d604aa"
+          },
+          {
+            "name": "Average Duration Minutes",
+            "description": "Average duration in minutes across valid flights",
+            "expression": [
+              "CALCULATE(",
+              "    AVERAGE('fact_flight'[duration_minutes]),",
+              "    KEEPFILTERS('fact_flight'[is_unknown_member] = FALSE())",
+              ")"
+            ],
+            "formatString": "0.00",
+            "lineageTag": "dc1f8cff-55a7-4e5b-b793-9a961a89814c"
+          },
+          {
+            "name": "Duration Spread Minutes",
+            "description": "Population standard deviation of duration minutes across valid flights",
+            "expression": [
+              "VAR FlightsWithDuration =",
+              "    FILTER(",
+              "        'fact_flight',",
+              "        'fact_flight'[is_unknown_member] = FALSE()",
+              "            && NOT ISBLANK('fact_flight'[duration_minutes])",
+              "    )",
+              "RETURN",
+              "    SWITCH(",
+              "        COUNTROWS(FlightsWithDuration),",
+              "        0, BLANK(),",
+              "        1, 0,",
+              "        STDEVX.P(FlightsWithDuration, 'fact_flight'[duration_minutes])",
+              "    )"
+            ],
+            "formatString": "0.00",
+            "lineageTag": "d8fc4d58-70b5-4e99-a720-8636ad2581e7"
+          },
+          {
+            "name": "Overnight Flights",
+            "description": "Flights departing on one calendar day and arriving the next",
+            "expression": "CALCULATE([Flights], KEEPFILTERS('fact_flight'[is_overnight] = TRUE()))",
+            "formatString": "#,##0",
+            "lineageTag": "a0e3367e-9ab0-4c1a-a091-43409c06a09a"
+          },
+          {
+            "name": "Overnight Share",
+            "description": "Share of flights that are overnight",
+            "expression": "DIVIDE([Overnight Flights], [Flights])",
+            "formatString": "0.0%",
+            "lineageTag": "36bdf423-f7b5-4cac-889b-5928b58c9c12"
+          },
+          {
+            "name": "Red Eye Flights",
+            "description": "Flights departing between 22:00 and 05:00",
+            "expression": "CALCULATE([Flights], KEEPFILTERS('fact_flight'[is_red_eye] = TRUE()))",
+            "formatString": "#,##0",
+            "lineageTag": "ccbbd3e7-cdbf-4ed0-b0b7-6d9d7e338ad3"
+          },
+          {
+            "name": "Red Eye Share",
+            "description": "Share of flights that depart during red-eye window",
+            "expression": "DIVIDE([Red Eye Flights], [Flights])",
+            "formatString": "0.0%",
+            "lineageTag": "f85143f7-c87a-4525-90d7-19e6e12e92ca"
+          },
+          {
+            "name": "Corrected Flights",
+            "description": "Flights where negative duration was corrected by rolling arrival forward",
+            "expression": "CALCULATE([Flights], KEEPFILTERS('fact_flight'[was_corrected] = TRUE()))",
+            "formatString": "#,##0",
+            "lineageTag": "b15256fd-8a70-4759-8e75-f692e0f98770"
+          },
+          {
+            "name": "Airline Flight Share",
+            "description": "Airline share of total flights across all airlines",
+            "expression": [
+              "DIVIDE(",
+              "    [Flights],",
+              "    CALCULATE([Flights], REMOVEFILTERS('dim_airline'))",
+              ")"
+            ],
+            "formatString": "0.0%",
+            "lineageTag": "e1da119d-1f75-483d-9d63-9d3cd06edfe9"
+          },
+          {
+            "name": "Bookings",
+            "description": "Total booking records",
+            "expression": "COALESCE(COUNTROWS('fact_booking'), 0)",
+            "formatString": "#,##0",
+            "lineageTag": "686a262a-b6ca-4bd3-8e02-ab8620a1fbc8"
+          },
+          {
+            "name": "Payments",
+            "description": "Total payment records",
+            "expression": "COALESCE(COUNTROWS('fact_payment'), 0)",
+            "formatString": "#,##0",
+            "lineageTag": "a2025810-1f79-476e-a0c1-f43bbc8f93ef"
+          },
+          {
+            "name": "Gross Valid Payment Amount",
+            "description": "Sum of valid payment amounts in INR",
+            "expression": [
+              "CALCULATE(",
+              "    SUM('fact_payment'[amount]),",
+              "    KEEPFILTERS('fact_payment'[amount_quality] = \"valid\")",
+              ")"
+            ],
+            "formatString": "\"₹\"#,##0.00;(\"₹\"#,##0.00);\"₹\"0.00",
+            "lineageTag": "7ff82347-cd9f-4d66-b766-0544512fef0e"
+          },
+          {
+            "name": "Confirmed Booking Payment Amount",
+            "description": "Gross valid payment amount filtered to confirmed bookings",
+            "expression": [
+              "CALCULATE(",
+              "    [Gross Valid Payment Amount],",
+              "    KEEPFILTERS('dim_status'[status] = \"CONFIRMED\")",
+              ")"
+            ],
+            "formatString": "\"₹\"#,##0.00;(\"₹\"#,##0.00);\"₹\"0.00",
+            "lineageTag": "6600acff-8447-4f59-8caa-9f92c66a2038"
+          },
+          {
+            "name": "Cancelled Bookings",
+            "description": "Count of cancelled bookings",
+            "expression": "CALCULATE([Bookings], KEEPFILTERS('dim_status'[status] = \"CANCELLED\"))",
+            "formatString": "#,##0",
+            "lineageTag": "26ac4247-31ee-46be-9f3f-f663e0dcd992"
+          },
+          {
+            "name": "Cancellation Rate",
+            "description": "Cancelled bookings divided by total bookings",
+            "expression": "DIVIDE([Cancelled Bookings], [Bookings])",
+            "formatString": "0.0%",
+            "lineageTag": "f1f2c054-6d10-464e-8521-cbc14f19e0e2"
+          },
+          {
+            "name": "Confirmed Bookings",
+            "description": "Count of confirmed bookings",
+            "expression": "CALCULATE([Bookings], KEEPFILTERS('dim_status'[status] = \"CONFIRMED\"))",
+            "formatString": "#,##0",
+            "lineageTag": "ea871e06-7799-4209-a2b0-9514f19b4fbc"
+          },
+          {
+            "name": "Confirmation Rate",
+            "description": "Confirmed bookings divided by total bookings",
+            "expression": "DIVIDE([Confirmed Bookings], [Bookings])",
+            "formatString": "0.0%",
+            "lineageTag": "d6630ed2-554a-464d-8baa-c57f251ec350"
+          },
+          {
+            "name": "Bookings With Payment",
+            "description": "Count of unique bookings with at least one payment record",
+            "expression": "COALESCE(DISTINCTCOUNT('fact_payment'[booking_sk]), 0)",
+            "formatString": "#,##0",
+            "lineageTag": "af555ce2-2026-4e75-b4d3-c3c6684c5872"
+          },
+          {
+            "name": "Payment Coverage",
+            "description": "Share of bookings having any payment record",
+            "expression": "DIVIDE([Bookings With Payment], [Bookings])",
+            "formatString": "0.0%",
+            "lineageTag": "cf2cf21d-b6f5-4e26-af74-17e74eccf770"
+          },
+          {
+            "name": "Bookings With Valid Payment",
+            "description": "Count of unique bookings with at least one valid payment record",
+            "expression": [
+              "COALESCE(",
+              "    CALCULATE(",
+              "        DISTINCTCOUNT('fact_payment'[booking_sk]),",
+              "        KEEPFILTERS('fact_payment'[amount_quality] = \"valid\")",
+              "    ),",
+              "    0",
+              ")"
+            ],
+            "formatString": "#,##0",
+            "lineageTag": "418623f9-9683-45d5-af75-95df8032cdfe"
+          },
+          {
+            "name": "Average Valid Payment Per Paid Booking",
+            "description": "Gross valid payments divided by paid bookings",
+            "expression": "DIVIDE([Gross Valid Payment Amount], [Bookings With Valid Payment])",
+            "formatString": "\"₹\"#,##0.00;(\"₹\"#,##0.00);\"₹\"0.00",
+            "lineageTag": "734ee7fe-d502-4031-9d13-279dbf73cdef"
+          },
+          {
+            "name": "Bookings Without Payment",
+            "description": "Count of bookings with zero payment records",
+            "expression": [
+              "COALESCE(",
+              "    COUNTROWS(",
+              "        EXCEPT(",
+              "            VALUES('fact_booking'[booking_sk]),",
+              "            VALUES('fact_payment'[booking_sk])",
+              "        )",
+              "    ),",
+              "    0",
+              ")"
+            ],
+            "formatString": "#,##0",
+            "lineageTag": "85ad867e-45a2-4687-82f7-c82e8c7017af"
+          },
+          {
+            "name": "Unresolved Flight Bookings",
+            "description": "Bookings associated with surrogate -1 unknown flight",
+            "expression": [
+              "CALCULATE(",
+              "    [Bookings],",
+              "    KEEPFILTERS('fact_booking'[has_unresolved_flight] = TRUE())",
+              ")"
+            ],
+            "formatString": "#,##0",
+            "lineageTag": "4a43598f-d032-4e83-b725-1ce96bd164a7"
+          },
+          {
+            "name": "Missing Amount Payments",
+            "description": "Payments with missing / blank amount",
+            "expression": "CALCULATE([Payments], KEEPFILTERS('fact_payment'[amount_quality] = \"missing\"))",
+            "formatString": "#,##0",
+            "lineageTag": "0eb4c2a3-9729-474a-a09a-a556b3662ffa"
+          },
+          {
+            "name": "Invalid Amount Payments",
+            "description": "Payments with non-numeric or negative amounts",
+            "expression": [
+              "CALCULATE(",
+              "    [Payments],",
+              "    KEEPFILTERS('fact_payment'[amount_quality] IN { \"non_numeric\", \"out_of_range\" })",
+              ")"
+            ],
+            "formatString": "#,##0",
+            "lineageTag": "7137ef0a-0386-4ef3-9454-70ee36089514"
+          },
+          {
+            "name": "Source Issue Events",
+            "description": "Sum of source issue events from disconnected dq_issue_summary",
+            "expression": "COALESCE(SUM('dq_issue_summary'[affected_rows]), 0)",
+            "formatString": "#,##0",
+            "lineageTag": "7dec9ce3-3df0-40f9-a2eb-ebb0a39bed40"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "_Measures-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i44FAA==\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [RowId = _t]),",
+                "    Typed = Table.TransformColumnTypes(Source, {{\"RowId\", Int64.Type}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_airline",
+        "columns": [
+          {
+            "name": "airline_sk",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "81dc7375-1e26-4de3-82c7-044010c2cf24",
+            "sourceColumn": "airline_sk"
+          },
+          {
+            "name": "airline",
+            "dataType": "string",
+            "lineageTag": "10518a92-1114-4519-a8c3-3f3bcb9900bc",
+            "sourceColumn": "airline"
+          },
+          {
+            "name": "is_unknown",
+            "dataType": "boolean",
+            "lineageTag": "c9b7f1fd-5051-4960-878c-720d64ece8eb",
+            "sourceColumn": "is_unknown"
+          }
+        ],
+        "lineageTag": "4e410a2f-5580-406c-adca-f58db82d7fa3",
+        "partitions": [
+          {
+            "name": "dim_airline-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/dim_airline.csv\"), [Delimiter=\",\", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"airline_sk\", Int64.Type}, {\"airline\", type text}, {\"is_unknown\", type logical}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_date",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "date_sk",
+            "dataType": "int64",
+            "lineageTag": "d1bcdb10-8c85-41e9-968e-1c040ffa74f1",
+            "sourceColumn": "date_sk"
+          },
+          {
+            "name": "date",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              },
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "32dbe894-78d1-48c8-a010-3a9dafc8cbd1",
+            "sourceColumn": "date",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "year",
+            "dataType": "int64",
+            "lineageTag": "93cebb4a-1c79-4402-83b0-601f3b4234c8",
+            "sourceColumn": "year"
+          },
+          {
+            "name": "month",
+            "dataType": "int64",
+            "lineageTag": "a104edc5-bc7d-4b8d-8211-1424eadf47cd",
+            "sourceColumn": "month"
+          },
+          {
+            "name": "year_month",
+            "dataType": "string",
+            "lineageTag": "00b575a0-b0cc-4417-a951-adff62452e72",
+            "sourceColumn": "year_month"
+          },
+          {
+            "name": "day",
+            "dataType": "int64",
+            "lineageTag": "f53f72ad-75b2-44a5-a570-6c87c630eb89",
+            "sourceColumn": "day"
+          },
+          {
+            "name": "weekday",
+            "dataType": "int64",
+            "lineageTag": "fa2ad5f2-69bf-42a1-9999-64e0317ae6c6",
+            "sourceColumn": "weekday"
+          }
+        ],
+        "isHidden": true,
+        "lineageTag": "4e4775fe-5c76-4670-ac9c-f143b55b463b",
+        "partitions": [
+          {
+            "name": "dim_date-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/dim_date.csv\"), [Delimiter=\",\", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"date_sk\", Int64.Type}, {\"date\", type date}, {\"year\", Int64.Type}, {\"month\", Int64.Type}, {\"year_month\", type text}, {\"day\", Int64.Type}, {\"weekday\", Int64.Type}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_departure_date",
+        "columns": [
+          {
+            "name": "date_sk",
+            "dataType": "int64",
+            "lineageTag": "e3e7decb-acac-476a-a4f4-718b7cd87840",
+            "sourceColumn": "date_sk"
+          },
+          {
+            "name": "date",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              },
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "a757bdd3-a1f6-47e8-8369-413de823b3fe",
+            "sourceColumn": "date",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "year",
+            "dataType": "int64",
+            "lineageTag": "c4429767-8f81-4441-8e46-374f75a1f33a",
+            "sourceColumn": "year"
+          },
+          {
+            "name": "month",
+            "dataType": "int64",
+            "lineageTag": "52c7340e-c28e-4b7f-84d1-72970f33fe0a",
+            "sourceColumn": "month"
+          },
+          {
+            "name": "year_month",
+            "dataType": "string",
+            "lineageTag": "71d8f516-7f0d-4c08-84e0-837fa3f012eb",
+            "sourceColumn": "year_month"
+          },
+          {
+            "name": "day",
+            "dataType": "int64",
+            "lineageTag": "1da8347a-0b22-49b6-89d5-788beb45ab2e",
+            "sourceColumn": "day"
+          },
+          {
+            "name": "weekday",
+            "dataType": "int64",
+            "lineageTag": "4948e0d6-ba83-4132-9f4a-95ece1ee39ad",
+            "sourceColumn": "weekday"
+          }
+        ],
+        "lineageTag": "fd5d8ba8-b589-489d-9107-b2d4b74d5fb3",
+        "partitions": [
+          {
+            "name": "dim_departure_date-Partition",
+            "mode": "import",
+            "source": {
+              "expression": "let Source = #\"dim_date\" in Source",
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_booking_date",
+        "columns": [
+          {
+            "name": "date_sk",
+            "dataType": "int64",
+            "lineageTag": "26a5cf45-d5ac-419d-8328-c2ce1253d832",
+            "sourceColumn": "date_sk"
+          },
+          {
+            "name": "date",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              },
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "f39171f4-80a3-4374-adb9-0463ea65ec15",
+            "sourceColumn": "date",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "year",
+            "dataType": "int64",
+            "lineageTag": "a3bfcc44-d748-45a3-ab5e-c4f1e8a3983f",
+            "sourceColumn": "year"
+          },
+          {
+            "name": "month",
+            "dataType": "int64",
+            "lineageTag": "8c71f5a2-f3e2-4a8e-b791-4f6a9ad23d93",
+            "sourceColumn": "month"
+          },
+          {
+            "name": "year_month",
+            "dataType": "string",
+            "lineageTag": "4acc4ce7-e39e-4aa0-989d-65a4f963f409",
+            "sourceColumn": "year_month"
+          },
+          {
+            "name": "day",
+            "dataType": "int64",
+            "lineageTag": "7af0b952-7fcc-4c31-8589-5a519a78a87b",
+            "sourceColumn": "day"
+          },
+          {
+            "name": "weekday",
+            "dataType": "int64",
+            "lineageTag": "29f77b03-173e-466a-949b-7fec6efb5c55",
+            "sourceColumn": "weekday"
+          }
+        ],
+        "lineageTag": "0cd80216-7ec0-46f9-a81c-ade528cb48d8",
+        "partitions": [
+          {
+            "name": "dim_booking_date-Partition",
+            "mode": "import",
+            "source": {
+              "expression": "let Source = #\"dim_date\" in Source",
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_route",
+        "columns": [
+          {
+            "name": "route_sk",
+            "dataType": "int64",
+            "lineageTag": "0f2f9c7d-1aca-4475-a946-eecb98ec4724",
+            "sourceColumn": "route_sk"
+          },
+          {
+            "name": "source",
+            "dataType": "string",
+            "lineageTag": "df5dcf5e-ed55-40fa-872b-fcae0b9b5e2d",
+            "sourceColumn": "source"
+          },
+          {
+            "name": "destination",
+            "dataType": "string",
+            "lineageTag": "b4062dee-2e50-4cb5-96e7-f54d1ee75921",
+            "sourceColumn": "destination"
+          },
+          {
+            "name": "route",
+            "dataType": "string",
+            "lineageTag": "5224b6c3-bfb0-454f-9dcb-d42905b05985",
+            "sourceColumn": "route"
+          }
+        ],
+        "lineageTag": "4d7bf877-dc62-4615-a16a-d9eaf726c4d9",
+        "partitions": [
+          {
+            "name": "dim_route-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/dim_route.csv\"), [Delimiter=\",\", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"route_sk\", Int64.Type}, {\"source\", type text}, {\"destination\", type text}, {\"route\", type text}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_passenger",
+        "columns": [
+          {
+            "name": "passenger_sk",
+            "dataType": "int64",
+            "lineageTag": "bcf78fec-a9c7-4b20-a645-820b11024d56",
+            "sourceColumn": "passenger_sk"
+          },
+          {
+            "name": "passenger_token",
+            "dataType": "string",
+            "lineageTag": "40baa96e-85a1-4a33-afff-236320e5fff1",
+            "sourceColumn": "passenger_token"
+          },
+          {
+            "name": "age",
+            "dataType": "int64",
+            "lineageTag": "3cf65d8f-1630-4535-9e95-790132db742c",
+            "sourceColumn": "age"
+          },
+          {
+            "name": "age_band",
+            "dataType": "string",
+            "lineageTag": "d9c9e5d7-c138-4a06-a9a5-4f4d51a7dd7a",
+            "sourceColumn": "age_band"
+          },
+          {
+            "name": "gender",
+            "dataType": "string",
+            "lineageTag": "1fcfd3a2-cb19-481d-9870-ae56a54845b2",
+            "sourceColumn": "gender"
+          }
+        ],
+        "lineageTag": "f439b6f3-66f1-4dc9-a1af-1b919b02b6de",
+        "partitions": [
+          {
+            "name": "dim_passenger-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/dim_passenger.csv\"), [Delimiter=\",\", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"passenger_sk\", Int64.Type}, {\"passenger_token\", type text}, {\"age\", Int64.Type}, {\"age_band\", type text}, {\"gender\", type text}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_status",
+        "columns": [
+          {
+            "name": "status_sk",
+            "dataType": "int64",
+            "lineageTag": "86eda02c-594b-474b-9b50-859adec494dc",
+            "sourceColumn": "status_sk"
+          },
+          {
+            "name": "status",
+            "dataType": "string",
+            "lineageTag": "0bdd07dc-b142-4e8f-a4c9-4dbd6a8c60fc",
+            "sourceColumn": "status"
+          },
+          {
+            "name": "is_valid",
+            "dataType": "boolean",
+            "lineageTag": "7759a226-f024-44cd-b8a5-fa6b42422300",
+            "sourceColumn": "is_valid"
+          }
+        ],
+        "lineageTag": "66aefe53-95c8-41dd-b27e-539b1232f5d3",
+        "partitions": [
+          {
+            "name": "dim_status-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/dim_status.csv\"), [Delimiter=\",\", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"status_sk\", Int64.Type}, {\"status\", type text}, {\"is_valid\", type logical}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact_flight",
+        "columns": [
+          {
+            "name": "flight_sk",
+            "dataType": "int64",
+            "lineageTag": "80d5d221-9be5-463c-b3cb-a2d625260996",
+            "sourceColumn": "flight_sk"
+          },
+          {
+            "name": "flight_id",
+            "dataType": "string",
+            "lineageTag": "9ff06c55-970e-416f-af97-9ba3013c388e",
+            "sourceColumn": "flight_id"
+          },
+          {
+            "name": "airline_sk",
+            "dataType": "int64",
+            "lineageTag": "fa780b88-1e2d-4561-82ae-cacea80034e9",
+            "sourceColumn": "airline_sk"
+          },
+          {
+            "name": "route_sk",
+            "dataType": "int64",
+            "lineageTag": "0667798e-5aa8-4798-a6ef-1de59a1b45cd",
+            "sourceColumn": "route_sk"
+          },
+          {
+            "name": "departure_date_sk",
+            "dataType": "int64",
+            "lineageTag": "d33a3dcd-4aca-4d07-99c6-93fd92c258d0",
+            "sourceColumn": "departure_date_sk"
+          },
+          {
+            "name": "departure_time",
+            "dataType": "dateTime",
+            "lineageTag": "0d516322-aae7-4289-ac78-b81ca80c4d42",
+            "sourceColumn": "departure_time"
+          },
+          {
+            "name": "departure_time_source_text",
+            "dataType": "string",
+            "lineageTag": "738cfe63-292f-4ff3-b174-4be67bb6196e",
+            "sourceColumn": "departure_time_source_text"
+          },
+          {
+            "name": "arrival_time",
+            "dataType": "dateTime",
+            "lineageTag": "53668206-7d26-412d-a805-5a47abacac2a",
+            "sourceColumn": "arrival_time"
+          },
+          {
+            "name": "arrival_time_source_text",
+            "dataType": "string",
+            "lineageTag": "dedda03d-1174-44c1-801f-e98e2c3e4757",
+            "sourceColumn": "arrival_time_source_text"
+          },
+          {
+            "name": "duration_minutes",
+            "dataType": "double",
+            "lineageTag": "b9dca5be-7814-44d9-b152-285f39061107",
+            "sourceColumn": "duration_minutes"
+          },
+          {
+            "name": "departure_hour",
+            "dataType": "int64",
+            "lineageTag": "03d47c00-f9ea-4487-a035-7a0da38e0475",
+            "sourceColumn": "departure_hour"
+          },
+          {
+            "name": "is_overnight",
+            "dataType": "boolean",
+            "lineageTag": "d31bc158-6100-49dc-844a-d078838d6b37",
+            "sourceColumn": "is_overnight"
+          },
+          {
+            "name": "is_red_eye",
+            "dataType": "boolean",
+            "lineageTag": "505d487d-1a6b-43e3-bf5d-b68938eefc8e",
+            "sourceColumn": "is_red_eye"
+          },
+          {
+            "name": "was_corrected",
+            "dataType": "boolean",
+            "lineageTag": "5193e1ec-8732-4d3f-87e6-385cf263cb86",
+            "sourceColumn": "was_corrected"
+          },
+          {
+            "name": "correction_reason",
+            "dataType": "string",
+            "lineageTag": "1dd1a9b4-298f-4acb-8180-5ede03166ffe",
+            "sourceColumn": "correction_reason"
+          },
+          {
+            "name": "duration_matches_raw",
+            "dataType": "boolean",
+            "lineageTag": "7d7f4a2d-f3a9-4ce1-8152-a7c29b1a5027",
+            "sourceColumn": "duration_matches_raw"
+          },
+          {
+            "name": "is_unknown_member",
+            "dataType": "boolean",
+            "lineageTag": "8988e77e-8bcf-4760-9a4b-b77805b8d1c1",
+            "sourceColumn": "is_unknown_member"
+          }
+        ],
+        "lineageTag": "041a3bac-d016-4da4-b30c-fd64b7b9dddf",
+        "partitions": [
+          {
+            "name": "fact_flight-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/fact_flight.csv\"), [Delimiter=\",\", Columns=15, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    DupDep = Table.DuplicateColumn(Headers, \"departure_time\", \"departure_time_source_text\"),",
+                "    DupArr = Table.DuplicateColumn(DupDep, \"arrival_time\", \"arrival_time_source_text\"),",
+                "    Typed = Table.TransformColumnTypes(DupArr, {{\"flight_sk\", Int64.Type}, {\"flight_id\", type text}, {\"airline_sk\", Int64.Type}, {\"route_sk\", Int64.Type}, {\"departure_date_sk\", Int64.Type}, {\"departure_time\", type datetime}, {\"arrival_time\", type datetime}, {\"duration_minutes\", type number}, {\"departure_hour\", Int64.Type}, {\"is_overnight\", type logical}, {\"is_red_eye\", type logical}, {\"was_corrected\", type logical}, {\"correction_reason\", type text}, {\"duration_matches_raw\", type logical}, {\"is_unknown_member\", type logical}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact_booking",
+        "columns": [
+          {
+            "name": "booking_sk",
+            "dataType": "int64",
+            "lineageTag": "51d3f222-facf-4629-8fc4-bd028ed4deb4",
+            "sourceColumn": "booking_sk"
+          },
+          {
+            "name": "booking_id",
+            "dataType": "string",
+            "lineageTag": "438f8970-d2da-42c1-a8e7-3731fb615b61",
+            "sourceColumn": "booking_id"
+          },
+          {
+            "name": "passenger_sk",
+            "dataType": "int64",
+            "lineageTag": "58c71220-67dc-421b-86b5-6e5506bd30ea",
+            "sourceColumn": "passenger_sk"
+          },
+          {
+            "name": "flight_sk",
+            "dataType": "int64",
+            "lineageTag": "36976dd4-8208-4816-92fd-9d344022d9ee",
+            "sourceColumn": "flight_sk"
+          },
+          {
+            "name": "booking_date_sk",
+            "dataType": "int64",
+            "lineageTag": "4ec1e8e7-d524-46f4-a67f-67adfb5df365",
+            "sourceColumn": "booking_date_sk"
+          },
+          {
+            "name": "status_sk",
+            "dataType": "int64",
+            "lineageTag": "1ea01df9-8362-4eac-8fca-dd852ce9fb75",
+            "sourceColumn": "status_sk"
+          },
+          {
+            "name": "has_unresolved_flight",
+            "dataType": "boolean",
+            "lineageTag": "659f2854-f58b-4844-958e-088db2d3e3f5",
+            "sourceColumn": "has_unresolved_flight"
+          },
+          {
+            "name": "has_unresolved_passenger",
+            "dataType": "boolean",
+            "lineageTag": "a035dfed-bb12-4b62-860d-f322a8f917cc",
+            "sourceColumn": "has_unresolved_passenger"
+          }
+        ],
+        "lineageTag": "3cf72423-953d-4785-9f59-631c95294a84",
+        "partitions": [
+          {
+            "name": "fact_booking-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/fact_booking.csv\"), [Delimiter=\",\", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"booking_sk\", Int64.Type}, {\"booking_id\", type text}, {\"passenger_sk\", Int64.Type}, {\"flight_sk\", Int64.Type}, {\"booking_date_sk\", Int64.Type}, {\"status_sk\", Int64.Type}, {\"has_unresolved_flight\", type logical}, {\"has_unresolved_passenger\", type logical}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact_payment",
+        "columns": [
+          {
+            "name": "payment_sk",
+            "dataType": "int64",
+            "lineageTag": "eb96367c-c57a-4f02-b3d6-e893ddfc8506",
+            "sourceColumn": "payment_sk"
+          },
+          {
+            "name": "payment_id",
+            "dataType": "string",
+            "lineageTag": "eab5e149-f1d7-47d0-8209-9194d1ccd062",
+            "sourceColumn": "payment_id"
+          },
+          {
+            "name": "booking_sk",
+            "dataType": "int64",
+            "lineageTag": "cb5c606e-47c4-472c-bf2b-a2bb14a27ae8",
+            "sourceColumn": "booking_sk"
+          },
+          {
+            "name": "amount",
+            "dataType": "decimal",
+            "lineageTag": "344d7333-5b56-4483-b646-2d2c0d49cd76",
+            "sourceColumn": "amount"
+          },
+          {
+            "name": "amount_quality",
+            "dataType": "string",
+            "lineageTag": "51205635-fe53-4e80-836d-30c7854318cb",
+            "sourceColumn": "amount_quality"
+          },
+          {
+            "name": "payment_method",
+            "dataType": "string",
+            "lineageTag": "bbbfbf04-e9d1-42ba-8d15-cc10252d4603",
+            "sourceColumn": "payment_method"
+          }
+        ],
+        "lineageTag": "e4e864c1-0c8f-4655-af5a-c43d2604c649",
+        "partitions": [
+          {
+            "name": "fact_payment-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/fact_payment.csv\"), [Delimiter=\",\", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"payment_sk\", Int64.Type}, {\"payment_id\", type text}, {\"booking_sk\", Int64.Type}, {\"amount\", Currency.Type}, {\"amount_quality\", type text}, {\"payment_method\", type text}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dq_issue_summary",
+        "columns": [
+          {
+            "name": "table_name",
+            "dataType": "string",
+            "lineageTag": "75160159-ab50-4a18-b135-7887b5338335",
+            "sourceColumn": "table_name"
+          },
+          {
+            "name": "issue",
+            "dataType": "string",
+            "lineageTag": "c7088b68-935a-4e4c-966b-98690fe3674a",
+            "sourceColumn": "issue"
+          },
+          {
+            "name": "treatment",
+            "dataType": "string",
+            "lineageTag": "489224df-5f3f-4aa5-b928-26f38c58de97",
+            "sourceColumn": "treatment"
+          },
+          {
+            "name": "affected_rows",
+            "dataType": "int64",
+            "formatString": "#,##0",
+            "lineageTag": "2d83c0a8-eca3-42ac-8a8f-8753eb7af829",
+            "sourceColumn": "affected_rows"
+          }
+        ],
+        "lineageTag": "c5776daa-04c4-401b-b635-9c217612793a",
+        "partitions": [
+          {
+            "name": "dq_issue_summary-Partition",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(SourceFolder & \"/dq_issue_summary.csv\"), [Delimiter=\",\", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"table_name\", type text}, {\"issue\", type text}, {\"treatment\", type text}, {\"affected_rows\", Int64.Type}})",
+                "in",
+                "    Typed"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

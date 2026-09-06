@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "d7773de73181bc502e0a",
+  "position": {
+    "x": 10,
+    "y": 570,
+    "z": 210,
+    "height": 440,
+    "width": 940,
+    "tabOrder": 210
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_route"
+                    }
+                  },
+                  "Property": "route"
+                }
+              },
+              "queryRef": "dim_route.route",
+              "nativeQueryRef": "route",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Flights"
+                }
+              },
+              "queryRef": "_Measures.Flights",
+              "nativeQueryRef": "Flights"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Average Duration Minutes"
+                }
+              },
+              "queryRef": "_Measures.Average Duration Minutes",
+              "nativeQueryRef": "Average Duration Minutes"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Duration Spread Minutes"
+                }
+              },
+              "queryRef": "_Measures.Duration Spread Minutes",
+              "nativeQueryRef": "Duration Spread Minutes"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

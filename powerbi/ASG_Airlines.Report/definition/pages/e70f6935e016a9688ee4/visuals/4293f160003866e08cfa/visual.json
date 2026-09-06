@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "4293f160003866e08cfa",
+  "position": {
+    "x": 965,
+    "y": 330,
+    "z": 210,
+    "height": 680,
+    "width": 945,
+    "tabOrder": 210
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dq_issue_summary"
+                    }
+                  },
+                  "Property": "table_name"
+                }
+              },
+              "queryRef": "dq_issue_summary.table_name",
+              "nativeQueryRef": "table_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dq_issue_summary"
+                    }
+                  },
+                  "Property": "issue"
+                }
+              },
+              "queryRef": "dq_issue_summary.issue",
+              "nativeQueryRef": "issue"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dq_issue_summary"
+                    }
+                  },
+                  "Property": "treatment"
+                }
+              },
+              "queryRef": "dq_issue_summary.treatment",
+              "nativeQueryRef": "treatment"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dq_issue_summary"
+                        }
+                      },
+                      "Property": "affected_rows"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(dq_issue_summary.affected_rows)",
+              "nativeQueryRef": "Sum of affected_rows"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

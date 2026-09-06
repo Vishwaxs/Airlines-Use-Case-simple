@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "ASG_Airlines"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "95c0dbd4-8d9a-497d-a01b-15b2c9fff3e4"
+  }
+}

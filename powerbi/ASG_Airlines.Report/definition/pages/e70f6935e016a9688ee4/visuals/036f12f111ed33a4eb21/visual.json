@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "036f12f111ed33a4eb21",
+  "position": {
+    "x": 10,
+    "y": 80,
+    "z": 0,
+    "height": 95,
+    "width": 1900,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Operational delay is not computable from this dataset. The source provides only actual departure and arrival timestamps, with no scheduled times to compare against. Duration reflects the flight interval. The metrics below report observable data-quality anomalies instead.",
+                    "textStyle": {
+                      "fontSize": "11pt"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

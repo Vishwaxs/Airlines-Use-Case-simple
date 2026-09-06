@@ -1,0 +1,94 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "a3adb71daf3505c1cbe3",
+  "position": {
+    "x": 965,
+    "y": 570,
+    "z": 220,
+    "height": 440,
+    "width": 945,
+    "tabOrder": 220
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_flight"
+                    }
+                  },
+                  "Property": "flight_id"
+                }
+              },
+              "queryRef": "fact_flight.flight_id",
+              "nativeQueryRef": "flight_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_flight"
+                    }
+                  },
+                  "Property": "departure_time"
+                }
+              },
+              "queryRef": "fact_flight.departure_time",
+              "nativeQueryRef": "departure_time"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_flight"
+                    }
+                  },
+                  "Property": "arrival_time"
+                }
+              },
+              "queryRef": "fact_flight.arrival_time",
+              "nativeQueryRef": "arrival_time"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_flight"
+                    }
+                  },
+                  "Property": "duration_minutes"
+                }
+              },
+              "queryRef": "fact_flight.duration_minutes",
+              "nativeQueryRef": "duration_minutes"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_flight"
+                    }
+                  },
+                  "Property": "correction_reason"
+                }
+              },
+              "queryRef": "fact_flight.correction_reason",
+              "nativeQueryRef": "correction_reason"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

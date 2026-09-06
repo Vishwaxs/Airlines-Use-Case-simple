@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "8d12a83eb230c0e070eb",
+  "position": {
+    "x": 966,
+    "y": 185,
+    "z": 102,
+    "height": 130,
+    "width": 468,
+    "tabOrder": 102
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Unresolved Flight Bookings"
+                }
+              },
+              "queryRef": "_Measures.Unresolved Flight Bookings",
+              "nativeQueryRef": "Unresolved Flight Bookings"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

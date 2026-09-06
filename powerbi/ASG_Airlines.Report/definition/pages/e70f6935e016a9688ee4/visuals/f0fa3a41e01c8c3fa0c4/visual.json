@@ -1,0 +1,62 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "f0fa3a41e01c8c3fa0c4",
+  "position": {
+    "x": 10,
+    "y": 330,
+    "z": 200,
+    "height": 680,
+    "width": 940,
+    "tabOrder": 200
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dq_issue_summary"
+                    }
+                  },
+                  "Property": "issue"
+                }
+              },
+              "queryRef": "dq_issue_summary.issue",
+              "nativeQueryRef": "issue",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dq_issue_summary"
+                        }
+                      },
+                      "Property": "affected_rows"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(dq_issue_summary.affected_rows)",
+              "nativeQueryRef": "Sum of affected_rows"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

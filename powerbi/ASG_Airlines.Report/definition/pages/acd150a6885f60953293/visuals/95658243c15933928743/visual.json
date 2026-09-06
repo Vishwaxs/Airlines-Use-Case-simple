@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "95658243c15933928743",
+  "position": {
+    "x": 955,
+    "y": 80,
+    "z": 103,
+    "height": 130,
+    "width": 305,
+    "tabOrder": 103
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Gross Valid Payment Amount"
+                }
+              },
+              "queryRef": "_Measures.Gross Valid Payment Amount",
+              "nativeQueryRef": "Gross Valid Payment Amount"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,130 @@
+// Create each measure separately in Power BI Desktop. See BUILD_GUIDE.md.
+
+Flights =
+COALESCE(
+    CALCULATE(
+        COUNTROWS('fact_flight'),
+        KEEPFILTERS('fact_flight'[is_unknown_member] = FALSE())
+    ),
+    0
+)
+
+Average Duration Minutes =
+CALCULATE(
+    AVERAGE('fact_flight'[duration_minutes]),
+    KEEPFILTERS('fact_flight'[is_unknown_member] = FALSE())
+)
+
+Duration Spread Minutes =
+VAR FlightsWithDuration =
+    FILTER(
+        'fact_flight',
+        'fact_flight'[is_unknown_member] = FALSE()
+            && NOT ISBLANK('fact_flight'[duration_minutes])
+    )
+RETURN
+    SWITCH(
+        COUNTROWS(FlightsWithDuration),
+        0, BLANK(),
+        1, 0,
+        STDEVX.P(FlightsWithDuration, 'fact_flight'[duration_minutes])
+    )
+
+Overnight Flights =
+CALCULATE([Flights], KEEPFILTERS('fact_flight'[is_overnight] = TRUE()))
+
+Overnight Share =
+DIVIDE([Overnight Flights], [Flights])
+
+Red Eye Flights =
+CALCULATE([Flights], KEEPFILTERS('fact_flight'[is_red_eye] = TRUE()))
+
+Red Eye Share =
+DIVIDE([Red Eye Flights], [Flights])
+
+Corrected Flights =
+CALCULATE([Flights], KEEPFILTERS('fact_flight'[was_corrected] = TRUE()))
+
+Airline Flight Share =
+DIVIDE(
+    [Flights],
+    CALCULATE([Flights], REMOVEFILTERS('dim_airline'))
+)
+
+Bookings =
+COALESCE(COUNTROWS('fact_booking'), 0)
+
+Payments =
+COALESCE(COUNTROWS('fact_payment'), 0)
+
+Gross Valid Payment Amount =
+CALCULATE(
+    SUM('fact_payment'[amount]),
+    KEEPFILTERS('fact_payment'[amount_quality] = "valid")
+)
+
+Confirmed Booking Payment Amount =
+CALCULATE(
+    [Gross Valid Payment Amount],
+    KEEPFILTERS('dim_status'[status] = "CONFIRMED")
+)
+
+Cancelled Bookings =
+CALCULATE([Bookings], KEEPFILTERS('dim_status'[status] = "CANCELLED"))
+
+Cancellation Rate =
+DIVIDE([Cancelled Bookings], [Bookings])
+
+Confirmed Bookings =
+CALCULATE([Bookings], KEEPFILTERS('dim_status'[status] = "CONFIRMED"))
+
+Confirmation Rate =
+DIVIDE([Confirmed Bookings], [Bookings])
+
+Bookings With Payment =
+COALESCE(DISTINCTCOUNT('fact_payment'[booking_sk]), 0)
+
+Payment Coverage =
+DIVIDE([Bookings With Payment], [Bookings])
+
+Bookings With Valid Payment =
+COALESCE(
+    CALCULATE(
+        DISTINCTCOUNT('fact_payment'[booking_sk]),
+        KEEPFILTERS('fact_payment'[amount_quality] = "valid")
+    ),
+    0
+)
+
+Average Valid Payment Per Paid Booking =
+DIVIDE([Gross Valid Payment Amount], [Bookings With Valid Payment])
+
+Bookings Without Payment =
+COALESCE(
+    COUNTROWS(
+        EXCEPT(
+            VALUES('fact_booking'[booking_sk]),
+            VALUES('fact_payment'[booking_sk])
+        )
+    ),
+    0
+)
+
+Unresolved Flight Bookings =
+CALCULATE(
+    [Bookings],
+    KEEPFILTERS('fact_booking'[has_unresolved_flight] = TRUE())
+)
+
+Missing Amount Payments =
+CALCULATE([Payments], KEEPFILTERS('fact_payment'[amount_quality] = "missing"))
+
+Invalid Amount Payments =
+CALCULATE(
+    [Payments],
+    KEEPFILTERS('fact_payment'[amount_quality] IN { "non_numeric", "out_of_range" })
+)
+
+// This disconnected summary counts source issue events, which can overlap.
+Source Issue Events =
+COALESCE(SUM('dq_issue_summary'[affected_rows]), 0)
