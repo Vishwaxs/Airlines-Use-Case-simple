@@ -126,51 +126,27 @@ Implementation: `src/pipeline.py:run_pipeline`, `_publish`; `reports/run_manifes
 
 Consequence: Consumers should read after the CLI succeeds. Local publication is a guarded multi-file move, not a database transaction across directories; concurrent readers are outside this batch contract. Run IDs and audit timestamps change on every run.
 
-## D-010 - Run the existing batch on Azure
+## D-010 - Keep the pipeline local and cloud-portable
 
-Context: The assignment prefers Azure and requires a working Power BI report. Local transformations, cloud publication and report interaction need separate checks.
+Context: The assignment prefers Azure but does not require it. The source is 4,059 rows across four sheets.
 
-Decision: Keep the Python transformations and add a download/run/upload adapter. Retain the gold CSVs, DAX definitions and Desktop build instructions.
+Decision: Run the batch locally and keep stage boundaries clean enough that each maps onto a cloud activity without changing transformation code. No cloud resources are provisioned as part of this submission.
 
-Alternatives considered: Reimplement cleaning in a second processing stack; treat static images as report evidence instead of a built report.
+Alternatives considered: Provision ADLS Gen2 storage with an orchestrated job to run the same batch; reimplement cleaning in a distributed engine.
 
-Why: One workbook does not require a second transformation implementation. A cloud run must be compared with its corresponding local baseline, and a Power BI report must be opened and refreshed in Desktop.
+Why: At this volume a distributed engine spends longer starting a cluster than the transform takes. Ingest, validate, clean, model and export each read and write one discrete layer, so moving to Data Factory activities or notebook tasks is a change of executor rather than a rewrite. Shipping provisioning scripts whose current resource state cannot be re-verified would claim more than the evidence supports.
 
-Implementation: `src/azure_adapter.py`, `tools/deploy_azure.ps1`, `powerbi/BUILD_GUIDE.md`, `powerbi/measures.dax`.
+Implementation: `src/pipeline.py`, stage order in `config/validation_rules.yaml` and the runner, `reports/run_manifest.json`.
 
-Consequence: Historical Azure evidence covers the previous 13-file export. The revised pipeline exports 14 CSVs, including the 13-period monthly booking extract, and needs a new cloud comparison. The working PBIX and genuine screenshots remain unfinished.
+Consequence: There is no cloud execution evidence in this repository. Scaling beyond a single node would start by partitioning bronze on ingest date and adding an incremental watermark on `booking_date`.
 
-## D-011 - Record the Container Apps deployment path
-
-Context: `reports/azure/deployment_manifest.json` records East Asia resources in `rg-asg-airlines-ea`. It is a saved deployment record; the local fixes do not recheck those resources.
-
-Decision: The supplied deployment script provisions ADLS Gen2 storage, Key Vault, a user-assigned managed identity, a registry, Log Analytics and a manually triggered Container Apps Job. It imports a Python base image and references its digest. The job installs dependencies at startup, downloads `restricted/app/app.tar.gz`, and invokes the adapter with the pepper supplied through a Key Vault reference.
-
-Why: This wrapper can invoke the existing batch without changing its data transformations.
-
-Implementation: `src/azure_adapter.py`, `tools/deploy_azure.ps1`, `tools/package_app.py`, `reports/azure/deployment_manifest.json`. The standalone `Dockerfile` defines a separate image-build path; the deployment script uses the imported base image and downloaded package.
-
-Consequence: The base-image digest does not identify the mutable application package. Azure dependencies installed by the script are not pinned. Historical evidence does not establish the current package version, current resource configuration, subscription restrictions or current costs.
-
-## D-012 - Publish Azure runs through a conditional pointer
-
-Context: Readers need a completed run to select while another run uploads its files.
-
-Decision: The adapter reads the workbook from `raw`, uploads gold CSVs/DuckDB/run metadata to `analytics`, and sends bronze, silver, quarantine, logs and profile outputs to `restricted`. Files use `runs/<run_id>/` prefixes. The adapter reads the initial `analytics/latest.json` ETag and conditions its final update on that value; initial creation fails if a pointer already exists.
-
-Why: A failure before the pointer update leaves readers on the previous selected run. A conflicting ETag is reported as a failed publication.
-
-Implementation: `src/azure_adapter.py:get_latest_etag`, `upload_file_and_verify`, `update_latest_pointer`, `run_adapter`.
-
-Consequence: The upload helper compares blob sizes and returns local hashes; it does not download remote bytes to verify those hashes. It allows overwrite, so run prefixes are not enforced immutable storage. The historical rerun record checks blob counts and selected KPIs; it does not establish prior-content immutability or test an ETag conflict. The Power BI project currently reads a local folder and does not consume `latest.json`.
-
-## D-013 - Retain the Power BI project for Desktop completion
+## D-011 - Retain the Power BI project alongside the built report
 
 Context: The retained project contains 12 table definitions, 26 measures, 8 active single-direction relationships and four page definitions. Static structure does not establish a working Power BI report.
 
 Decision: Keep the report definition in source control as a PBIP project so the semantic model and page layout are reviewable as text, and publish the built `ASG_Airlines.pbix` alongside it. Source-query column declarations were aligned with the gold exports before the model was refreshed in Desktop.
 
-Why: Separate flight, booking and payment grains and one-direction relationships make filter paths and payment totals inspectable. Each displayed KPI still requires a runtime comparison with the selected run.
+Why: Separate flight, booking and payment grains with one-direction relationships make filter paths and payment totals inspectable. Every displayed KPI was compared against its gold export after refresh; results are recorded in `powerbi/VERIFICATION.md`.
 
 Implementation: `powerbi/ASG_Airlines.pbip`, `powerbi/ASG_Airlines.Report/`, `powerbi/ASG_Airlines.SemanticModel/`, `powerbi/measures.dax`, `powerbi/BUILD_GUIDE.md`, `powerbi/VERIFICATION.md`.
 

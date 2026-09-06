@@ -15,4 +15,4 @@
 | Pipeline execution | `src/pipeline.py:run_pipeline` | Run each stage in order and record its result. |
 | Quarantine | `src/clean.py`; `data/quarantine/` | Preserve unusable or ambiguous rows separately with their reason. |
 
-Be able to explain SJ192's 300-minute correction, why 6F250's two bookings remain, and why summing the source three-way join overstates payments by INR 208,615.94. Explain the 606-booking denominator for valid-payment averages, the 13 year-month periods, and the 714 overlapping source issue events. Distinguish the historical Azure records in `reports/azure/` from the unverified Desktop checks in `powerbi/VERIFICATION.md`.
+Be able to explain SJ192's 300-minute correction, why 6F250's two bookings remain, and why summing the source three-way join overstates payments by INR 208,615.94. Explain the 606-booking denominator for valid-payment averages, the 13 year-month periods, and the 714 overlapping source issue events. Be able to say why cloud deployment was scoped out and where the stage boundaries would map onto it.
