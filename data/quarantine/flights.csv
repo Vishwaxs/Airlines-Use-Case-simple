@@ -1,0 +1,3 @@
+flight_id,airline,source,destination,departure_time,arrival_time,duration,source_row,source_sheet,run_id,ingested_at,quarantine_reason
+6F250,UNKNOWN,DEL,BLR,2026-04-20 03:26:41.701,2026-04-20 07:30:41.701,04:04:00,255,flights,20260906T073742_46102fbf2791,2026-09-06T07:37:42.089557+00:00,conflicting_duplicate_key
+6F250,UNKNOWN,CCU,BLR,2026-04-20 02:23:41.702,2026-04-20 02:56:41.702,00:33:00,272,flights,20260906T073742_46102fbf2791,2026-09-06T07:37:42.089557+00:00,conflicting_duplicate_key

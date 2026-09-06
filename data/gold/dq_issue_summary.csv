@@ -1,0 +1,16 @@
+table_name,issue,treatment,affected_rows
+bookings,booking_without_payment,retain,363
+bookings,missing_status,retain_as_unknown,45
+bookings,sentinel_status,retain_as_invalid,30
+bookings,unavailable_flight_reference,retain_with_unknown_flight,2
+flights,conflicting_duplicate_key,quarantine,2
+flights,duration_reconciliation_mismatch,retain_timestamp_duration,1
+flights,exact_duplicate,exact_duplicate_removed,15
+flights,flight_without_booking,retain,20
+flights,missing_airline,retain_as_unknown,41
+flights,negative_duration,roll_arrival_forward_one_day,1
+flights,sentinel_airline,retain_as_unknown,31
+passengers,duplicate_passenger_id,deterministic_survivorship,75
+passengers,missing_last_name,mask_available_name,10
+payments,missing_amount,retain_with_null_amount,48
+payments,non_numeric_amount,retain_with_null_amount,30

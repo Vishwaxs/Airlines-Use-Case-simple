@@ -1,0 +1,2 @@
+flight_count,avg_duration_minutes,overnight_share,red_eye_share,booking_count,payment_count,gross_valid_payment_amount,confirmed_booking_payment_amount,cancellation_rate,confirmation_rate,payment_coverage,avg_valid_payment_per_paid_booking,bookings_without_payment
+1003,164.67211774675968,0.12163509471585245,0.27018943170488535,1000,1000,7385142.98,2471402.04,0.314,0.32,0.637,12186.704587458747,363

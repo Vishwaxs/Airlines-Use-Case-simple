@@ -1,0 +1,6 @@
+status_sk,status,is_valid
+-1,UNKNOWN,false
+1,CONFIRMED,true
+2,CANCELLED,true
+3,PENDING,true
+4,INVALID,false
